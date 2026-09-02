@@ -1,1 +1,253 @@
 
+# 🏢 Smart Building Security, Access Control and IoT Monitoring System
+
+## 📌 Project Overview
+
+The **Smart Building Security, Access Control and IoT Monitoring System** is an intelligent embedded security project designed using the **LPC2129 ARM7 Microcontroller**.
+
+The system provides secure building access using multiple authentication methods:
+
+- 🪪 RFID Authentication
+- 👆 Fingerprint Authentication
+- 🔐 Password Authentication
+
+After successful authentication, the system automatically unlocks the door and records security events. The project also supports **IoT cloud monitoring, event logging, CAN communication, and automatic door control**.
+
+---
+
+# 🎯 Project Objectives
+
+- Provide secure building access using multiple authentication methods.
+- Prevent unauthorized entry.
+- Automatically control the electromagnetic door lock.
+- Monitor human movement and door status.
+- Record security events with date and time.
+- Store security records in EEPROM and SD Card.
+- Support IoT cloud monitoring.
+- Enable CAN communication between multiple security nodes.
+
+---
+
+# 🛠️ Technologies Used
+
+- LPC2129 ARM7 Microcontroller
+- Embedded C
+- Arduino UNO
+- IoT
+- UART Communication
+- SPI Communication
+- I2C Communication
+- CAN Communication
+- GPIO
+- PWM
+
+---
+
+# 🔧 Hardware Components
+
+| Component | Purpose |
+|-----------|---------|
+| LPC2129 ARM7 | Main Controller |
+| RC522 RFID Reader | RFID Authentication |
+| R307S Fingerprint Sensor | Biometric Authentication |
+| Arduino UNO | Fingerprint Processing |
+| 4×4 Matrix Keypad | Password Authentication |
+| PIR Motion Sensor | Human Motion Detection |
+| Magnetic Door Sensor | Door Status Monitoring |
+| DS1307 RTC | Date and Time Logging |
+| ESP-01 Wi-Fi Module | IoT Cloud Connectivity |
+| MCP2551 CAN Transceiver | CAN Communication |
+| AT24C256 EEPROM | Permanent Data Storage |
+| SD Card Module | Security Event Logging |
+| Relay Module | Door Lock Control |
+| Electromagnetic Door Lock | Secure Door Locking |
+| Servo Motor | Automatic Door Operation |
+| 16×2 LCD | System Status Display |
+| LEDs | Visual Indication |
+| Buzzer | Security Alert |
+
+---
+
+# 🔐 Authentication Process
+
+The system uses multiple levels of authentication.
+
+### 1️⃣ RFID Authentication
+
+The user scans an RFID card using the RC522 RFID Reader.
+
+- If the RFID card is valid, authentication continues.
+- If the RFID card is invalid, the system can request another authentication method or deny access.
+
+---
+
+### 2️⃣ Password Authentication
+
+The user enters a password using the 4×4 Matrix Keypad.
+
+- Correct Password → Authentication Successful
+- Wrong Password → Access Denied
+
+Multiple incorrect attempts can activate the security alarm.
+
+---
+
+### 3️⃣ Fingerprint Authentication
+
+The R307S Fingerprint Sensor verifies the user's fingerprint.
+
+The fingerprint sensor is controlled using an Arduino UNO.
+
+The Arduino sends the fingerprint authentication result to the LPC2129 through UART communication.
+
+- Valid Fingerprint → Access Granted
+- Invalid Fingerprint → Access Denied
+
+---
+
+# 🚪 Automatic Door Control
+
+After successful authentication:
+
+1. LPC2129 activates the Relay Module.
+2. The Electromagnetic Door Lock is unlocked.
+3. The Servo Motor opens the door.
+4. The user enters the building.
+5. The Servo Motor closes the door automatically.
+6. The Magnetic Door Sensor checks whether the door is properly closed.
+
+---
+
+# 📡 IoT Monitoring
+
+The ESP-01 Wi-Fi Module connects the system to the Internet.
+
+Security events are uploaded to the IoT cloud.
+
+Events include:
+
+- RFID Authentication
+- Fingerprint Verification
+- Password Verification
+- Door Open Status
+- Door Closed Status
+- Motion Detection
+- Unauthorized Access
+- Security Alerts
+
+The administrator can monitor the building security remotely.
+
+---
+
+# 📝 Event Logging
+
+The system records important security events.
+
+The **DS1307 RTC** provides the current date and time.
+
+Security events are stored in:
+
+- AT24C256 EEPROM
+- SD Card
+
+Logged information may include:
+
+- User Authentication Status
+- Authentication Method
+- Entry Time
+- Door Status
+- Motion Detection
+- Security Alerts
+
+---
+
+# 🌐 CAN Communication
+
+The MCP2551 CAN Transceiver allows multiple LPC2129 security controllers to communicate with each other.
+
+This makes the system suitable for buildings with:
+
+- Multiple Entrances
+- Different Security Zones
+- Centralized Security Monitoring
+
+Security information can be shared between multiple nodes.
+
+---
+
+# 📺 System Indications
+
+## 🟢 Green LED
+
+Indicates:
+
+- System Ready
+- Authentication Successful
+- Access Granted
+
+## 🟡 Yellow LED
+
+Indicates:
+
+- Authentication in Progress
+- System Processing
+
+## 🔴 Red LED
+
+Indicates:
+
+- Authentication Failed
+- Unauthorized Access
+- Security Alert
+
+## 🔊 Buzzer
+
+The buzzer is activated when:
+
+- Authentication Fails
+- Unauthorized Access is Detected
+- Door Breach Occurs
+
+---
+
+# 🔄 Working Principle
+
+```text
+                USER APPROACHES DOOR
+                         │
+                         ▼
+                 PIR MOTION DETECTED
+                         │
+                         ▼
+                   RFID SCAN
+                         │
+                ┌────────┴────────┐
+                │                 │
+              VALID             INVALID
+                │                 │
+                ▼                 ▼
+         PASSWORD /            ACCESS
+        FINGERPRINT          DENIED
+                │
+        ┌───────┴────────┐
+        │                │
+      VALID            INVALID
+        │                │
+        ▼                ▼
+   ACCESS GRANTED    SECURITY ALERT
+        │
+        ▼
+   RELAY ACTIVATED
+        │
+        ▼
+ ELECTROMAGNETIC LOCK
+      UNLOCKED
+        │
+        ▼
+   SERVO OPENS DOOR
+        │
+        ▼
+   EVENT LOG SAVED
+        │
+        ▼
+  DATA UPLOADED TO CLOUD
